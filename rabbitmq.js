@@ -11,7 +11,7 @@ export async function listenToQueue(queueName, messageProcessor) {
     const channel = await connection.createChannel();
 
     // Make sure the queue exists
-    await channel.assertQueue(queueName, { durable: false });
+    await channel.assertQueue(queueName, { durable: true });
 
     console.log(`Waiting for messages in queue: ${queueName}`);
 
