@@ -2,6 +2,8 @@ import pkg from 'pg';
 const { Pool } = pkg;
 const { POSTGRES_URL } = process.env;
 
+console.log('POSTGRES_URL : ', POSTGRES_URL);
+
 export const pool = new Pool({
   connectionString: POSTGRES_URL,
 });

@@ -1,7 +1,6 @@
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
-import { pool } from './db.js';
 import cors from 'cors';
 import pg from 'pg';
 
