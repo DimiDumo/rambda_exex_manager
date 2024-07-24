@@ -1,3 +1,5 @@
+import { promises as fs } from 'fs';
+import path from 'path';
 import 'dotenv/config';
 import './listen-to-logs.js';
 import { listenToQueue } from './rabbitmq.js';
