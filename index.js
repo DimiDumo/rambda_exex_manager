@@ -43,7 +43,33 @@ listenToQueue('testrun', async (messageStr) => {
 });
 
 listenToQueue('exex', async (messageStr) => {
-  console.log('messageStr: ', messageStr);
-  const message = JSON.parse(messageStr);
-  console.log('message : ', message);
+  const timestamp = new Date().getTime();
+  console.log('timestamp : ', timestamp);
+
+  console.log('Got new message');
+  console.time('parse');
+  const parsed = JSON.parse(messageStr);
+  console.timeEnd('parse');
+  try {
+    // Create timestamp for filename
+    const timestamp = new Date().getTime();
+    const fileName = `${timestamp}.json`;
+
+    // Ensure the block_data directory exists
+    const dir = 'block_data';
+    try {
+      await fs.access(dir);
+    } catch {
+      await fs.mkdir(dir, { recursive: true });
+    }
+
+    // Create full file path
+    const filePath = path.join(dir, fileName);
+
+    // Write data to file
+    await fs.writeFile(filePath, data);
+    console.log(`File written successfully: ${filePath}`);
+  } catch (err) {
+    console.error('Error writing file:', err);
+  }
 });
