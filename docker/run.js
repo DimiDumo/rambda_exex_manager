@@ -1,22 +1,25 @@
 import Docker from 'dockerode';
-const { DOCKER_SOCKET_PATH } = process.env;
+const { DOCKER_SOCKET_PATH, ABSOLUTE_DATA_FILE_PATH } = process.env;
 
 // Initialize Docker client
 const docker = new Docker({
   socketPath: DOCKER_SOCKET_PATH || '/var/run/docker.sock',
 });
 
-export async function run(tagName, branchName) {
+export async function run(tagName, branchName, filePath) {
   try {
     tagName = tagName.toLowerCase();
     console.log('Running container: ', tagName);
-    // Run the container
 
+    // Run the container
     const container = await docker.createContainer({
       Image: `${tagName}:${branchName}`,
       AttachStdout: true,
       AttachStderr: true,
       Tty: false,
+      HostConfig: {
+        Binds: [`${ABSOLUTE_DATA_FILE_PATH}/${filePath}:/app/data.json`],
+      },
     });
 
     await container.start();

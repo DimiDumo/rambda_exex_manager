@@ -1,7 +1,8 @@
 import Docker from 'dockerode';
 import path from 'path';
 
-const { DOCKER_SOCKET_PATH, GITHUB_ACCESS_TOKEN } = process.env;
+const { DOCKER_SOCKET_PATH, GITHUB_ACCESS_TOKEN, DOCKER_FILE_PATH } =
+  process.env;
 
 // Initialize Docker client
 const docker = new Docker({
@@ -23,7 +24,7 @@ export async function build(repoName, branchName) {
   console.log('buildArgs: ', buildArgs);
 
   // Path to your Dockerfile
-  const dockerfilePath = path.join(process.cwd(), '..', 'rambda', 'js_build');
+  const dockerfilePath = path.join(process.cwd(), 'js_build');
 
   console.log('dockerfilePath: ', dockerfilePath);
 
