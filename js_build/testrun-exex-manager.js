@@ -6,7 +6,7 @@ async function main() {
   let data;
   try {
     console.log('Reading data file');
-    data = await fs.readFile('data.json');
+    data = await fs.readFile('exex-data.json');
     console.log('Parsing data file');
     data = JSON.parse(data);
   } catch (err) {
