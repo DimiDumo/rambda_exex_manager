@@ -43,34 +43,34 @@ listenToQueue('testrun', async (messageStr) => {
   console.log('logs after docker run: ', logs);
 });
 
-// listenToQueue('exex', async (messageStr) => {
-//   const timestamp = new Date().getTime();
-//   console.log('timestamp : ', timestamp);
+listenToQueue('exex', async (messageStr) => {
+  const timestamp = new Date().getTime();
+  console.log('timestamp : ', timestamp);
 
-//   console.log('Got new message');
-//   console.time('parse');
-//   const parsed = JSON.parse(messageStr);
-//   console.timeEnd('parse');
-//   try {
-//     // Create timestamp for filename
-//     const timestamp = new Date().getTime();
-//     const fileName = `${timestamp}.json`;
+  console.log('Got new message');
+  console.time('parse');
+  const parsed = JSON.parse(messageStr);
+  console.timeEnd('parse');
+  try {
+    // Create timestamp for filename
+    const timestamp = new Date().getTime();
+    const fileName = `${timestamp}.json`;
 
-//     // Ensure the block_data directory exists
-//     const dir = 'block_data';
-//     try {
-//       await fs.access(dir);
-//     } catch {
-//       await fs.mkdir(dir, { recursive: true });
-//     }
+    // Ensure the block_data directory exists
+    const dir = 'block_data';
+    try {
+      await fs.access(dir);
+    } catch {
+      await fs.mkdir(dir, { recursive: true });
+    }
 
-//     // Create full file path
-//     const filePath = path.join(dir, fileName);
+    // Create full file path
+    const filePath = path.join(dir, fileName);
 
-//     // Write data to file
-//     await fs.writeFile(filePath, messageStr);
-//     console.log(`File written successfully: ${filePath}`);
-//   } catch (err) {
-//     console.error('Error writing file:', err);
-//   }
-// });
+    // Write data to file
+    await fs.writeFile(filePath, messageStr);
+    console.log(`File written successfully: ${filePath}`);
+  } catch (err) {
+    console.error('Error writing file:', err);
+  }
+});

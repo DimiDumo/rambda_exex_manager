@@ -28,7 +28,7 @@ const client = new protoDescriptor.exex.RemoteExEx(
 const call = client.Subscribe({});
 
 call.on('data', (notification) => {
-  console.log('Received notification:', notification);
+  console.log('Received notification:', !!notification);
 
   // Handle different types of notifications
   if (notification.chainCommitted) {
