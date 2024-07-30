@@ -17,7 +17,7 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
 
@@ -36,7 +36,7 @@ async function setupPgListener(repoName, callback) {
       console.log('A new log has been inserted: ', row);
       console.log('subscriptionsByRepoName: ', !!subscriptionsByRepoName);
       const repoSubsciptionsBySocketId = subscriptionsByRepoName.get(
-        row.github_repos_name,
+        row.github_repos_name.toLowerCase(),
       );
       console.log('repoSubsciptionsBySocketId: ', !!repoSubsciptionsBySocketId);
       if (repoSubsciptionsBySocketId) {
@@ -62,7 +62,10 @@ io.on('connection', (socket) => {
     let repoSubsciptionsBySocketId = subscriptionsByRepoName.get(repoName);
     if (!repoSubsciptionsBySocketId) {
       repoSubsciptionsBySocketId = new Map();
-      subscriptionsByRepoName.set(repoName, repoSubsciptionsBySocketId);
+      subscriptionsByRepoName.set(
+        repoName.toLowerCase(),
+        repoSubsciptionsBySocketId,
+      );
     }
 
     repoSubsciptionsBySocketId.set(socket.id, socket);
@@ -82,3 +85,4 @@ io.on('connection', (socket) => {
     }
   });
 });
+

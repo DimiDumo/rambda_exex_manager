@@ -13,7 +13,7 @@ ARG REPO_NAME
 ARG BRANCH_NAME
 
 # Clone the private GitHub repository and force rebuild from here onward
-ARG CACHE_BUST=1
+ARG CACHE_BUST
 RUN git clone https://$GITHUB_ACCESS_TOKEN@github.com/dimidumo/$REPO_NAME.git /app
 
 # Set the working directory

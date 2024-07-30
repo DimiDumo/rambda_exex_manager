@@ -17,9 +17,13 @@ export async function run(tagName, branchName, filePath) {
       AttachStdout: true,
       AttachStderr: true,
       Tty: false,
-      HostConfig: {
-        Binds: [`${ABSOLUTE_DATA_FILE_PATH}/${filePath}:/app/data.json`],
-      },
+	          HostConfig: {
+			          Binds: [
+					            `${ABSOLUTE_DATA_FILE_PATH}/${filePath}:/app/data.json`,
+					            '/tmp/reth.ipc:/tmp/reth.ipc',
+					          ],
+			        },
+
     });
 
     await container.start();

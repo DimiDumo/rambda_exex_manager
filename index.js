@@ -2,12 +2,14 @@ import 'dotenv/config';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+
 import './listen-to-logs.js';
 // import './listen-to-protobuf.js';
 import { listenToQueue } from './rabbitmq.js';
 import { build } from './docker/build.js';
 import { run } from './docker/run.js';
 import db from './db.js';
+import { insertLogs } from './db.js';
 
 const { ABSOLUTE_DATA_FILE_PATH } = process.env;
 
@@ -33,16 +35,15 @@ listenToQueue('testrun', async (messageStr) => {
 
   let logs;
   try {
-    logs = await run(message.name, 'testrun', `test-data.json`);
+    console.log("starting test run============================");
+    logs = await run(message.name, 'testrun', `exex-data.json`);
+    console.log("Finished the run");
   } catch (err) {
     console.error(`Failed to run docker file for ${message.name}`, err);
   }
 
   try {
-    await db.query`
-      INSERT INTO repo_logs (github_repos_name, logs, branch)
-      VALUES (${message.name}, ${JSON.stringify(logs)}::jsonb, 'testrun')
-    `;
+	      await insertLogs(message.name, logs, 'testrun', db);
   } catch (err) {
     console.error('Error saving to postgres', err);
   }
@@ -85,7 +86,7 @@ listenToQueue('main', async (messageStr) => {
 });
 
 listenToQueue('exex', async (messageStr) => {
-  console.log('Got new message');
+  console.log('Got new message:');
   // let data;
   // try {
   //   console.time('parse');
@@ -131,10 +132,9 @@ listenToQueue('exex', async (messageStr) => {
         }
 
         try {
-          await db.query`
-              INSERT INTO repo_logs (github_repos_name, logs, branch)
-              VALUES (${row.repo_name}, ${JSON.stringify(logs)}::jsonb, 'main')
-            `;
+		          await insertLogs(row.repo_name, logs, 'main', db);
+		
+
         } catch (err) {
           console.error('Error saving to postgres', err);
         }

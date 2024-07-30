@@ -12,6 +12,9 @@ const docker = new Docker({
 export async function build(repoName, branchName) {
   repoName = repoName.toLowerCase();
 
+	console.log("repoName: ", repoName);
+	console.log("branchName: ", branchName);
+
   // Define build arguments (environment variables)
   const buildArgs = {
     REPO_NAME: repoName,

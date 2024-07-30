@@ -60,13 +60,14 @@ import { ExEx } from './index.js';
 import { promises as fs } from 'fs';
 
 async function main() {
-  console.time('init');
   let data;
   try {
-    console.log('Reading data file');
     data = await fs.readFile('data.json');
-    console.log('Parsing data file');
+    data = data.toString();
+    data = data.replaceAll('\\', '');
+    data = data.slice(1, -1);
     data = JSON.parse(data);
+    // console.log('data keys: ', Object.keys(data));
   } catch (err) {
     console.timeEnd('init');
     console.error(
@@ -75,16 +76,23 @@ async function main() {
     );
     return;
   }
-  console.timeEnd('init');
   try {
-    console.time('exex');
+    const now = new Date();
+    const dateStr = now.toISOString();
+    console.log(
+      '\nRunning ExEx at ',
+      dateStr,
+      ' ===================================',
+    );
+    console.time('exex took');
     await ExEx(data);
-    console.timeEnd('exex');
+    console.timeEnd('exex took');
   } catch (err) {
-    console.timeEnd('exex');
+    console.timeEnd('exex took');
     console.error('Error in main: ', err);
   }
 }
 
 // Run test func with test data
 main();
+
